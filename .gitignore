@@ -1,0 +1,10 @@
+# eclipse
+.project
+*.log
+*.md.html
+logs*
+
+# kafka
+config/server.properties
+config/zookeeper.properties
+
