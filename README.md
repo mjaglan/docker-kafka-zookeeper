@@ -105,6 +105,11 @@ Follow the instructions from [Post-installation steps for Linux](https://docs.do
 		```
 
 
+## Web UI
+
+- Yahoo Kafka Manager can be accessed on browser at [http://CONTAINER-IP:9000/](http://0.0.0.0:9000/)
+
+
 ## Tools
 ```
 Docker version 17.06.0-ce

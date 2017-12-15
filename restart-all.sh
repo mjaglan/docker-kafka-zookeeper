@@ -147,11 +147,6 @@ do
 done
 
 
-printf "\n"
-echo "LIST OF RUNNING DOCKER CONTAINERS -"
-docker ps
-
-
 # Get All Kafka, Zookeeper logs from all container
 rm -rf ./logs-$HOST_PREFIX*
 i=$INIT
@@ -163,6 +158,43 @@ do
 	docker cp $KAFKA_NODE:/usr/local/kafka/logs/ $LOGS_DIR/
 	i=$(( $i + 1 ))
 done
+
+
+# Build KAFKA UI Image
+IMG_NAME="mjaglan/ubuntukafkamanager2017"
+docker build  -t "$IMG_NAME" "$(pwd)/third-party"
+
+# start KAFKA UI container
+: '
+Daemon                   Default Port
+-----------------------  ------------
+Yahoo-Kafka-Manager      9000
+'
+KAFKA_UI="$HOST_PREFIX"-UI
+docker run --name $KAFKA_UI -h $KAFKA_UI --net=$NETWORK_NAME \
+        -p 9000:9000 \
+        -e ZK_HOSTS=$ZOOKEEPER_CONNECT \
+		-itd "$IMG_NAME"
+
+# run yahoo-kafka-manager
+CMD_KAFKA="/usr/local/kafka-manager/yahoo-kafka-manager.sh"
+docker exec -it $KAFKA_UI $CMD_KAFKA
+
+# Get yahoo-kafka-manager logs from KAFKA_UI
+LOGS_DIR="./logs-$KAFKA_UI"
+rm -rf $LOGS_DIR
+mkdir -p $LOGS_DIR
+# FILE: kafka-manager-service.log
+LOG_PATH="/usr/local/kafka-manager/target/universal/kafka-manager-service/kafka-manager-service.log"
+docker cp $KAFKA_UI:$LOG_PATH $LOGS_DIR/
+# FILE: application.log
+LOG_PATH="/usr/local/kafka-manager/target/universal/kafka-manager-service/logs/application.log"
+docker cp $KAFKA_UI:$LOG_PATH $LOGS_DIR/
+
+
+printf "\n"
+echo "LIST OF RUNNING DOCKER CONTAINERS -"
+docker ps
 
 
 # start kafka benchmark(s)
@@ -184,4 +216,3 @@ printf "\n"
 LEADER_NODE=$(( $N / 2 + 1))
 echo "Attaching to testbed-$LEADER_NODE"
 docker attach testbed-$LEADER_NODE
-
