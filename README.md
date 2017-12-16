@@ -110,6 +110,28 @@ Follow the instructions from [Post-installation steps for Linux](https://docs.do
 - Yahoo Kafka Manager can be accessed on browser at [http://CONTAINER-IP:9000/](http://0.0.0.0:9000/)
 
 
+## Yahoo Kafka Manager UI
+- List of Clusters
+
+![List of Clusters][clusters]
+
+- Summary of a Cluster
+
+![Summary of a Cluster][summary]
+
+- List of Brokers
+
+![List of Topics][brokers]
+
+- List of Topics
+
+![List of Topics][topics]
+
+- List of Consumers
+
+![List of Consumers][consumers]
+
+
 ## Tools
 ```
 Docker version 17.06.0-ce
@@ -133,4 +155,10 @@ Eclipse Docker Tooling 3.1.0
 
 See the article on [Fix Docker's networking DNS config](https://robinwinslow.uk/2016/06/23/fix-docker-networking-dns/)
 -->
+
+[clusters]:  assets/images/page-1.png
+[summary]:   assets/images/page-2.png
+[brokers]:   assets/images/page-3.png
+[topics]:    assets/images/page-4.png
+[consumers]: assets/images/page-5.png
 
